@@ -1,0 +1,124 @@
+---
+title: "Geography 176A Labs"
+author: "[Tiago] (https:/TiagoSchwartz.github.io)"
+date: 08/13/20
+subtitle: "Lab 02"
+output:
+  html_document:
+    theme: darkly
+---  
+```{r}
+library (tidyverse)
+library(dplyr)
+library(zoo)
+library(knitr)
+library(readr)
+coviddata=read.csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counties.csv")
+
+```
+
+"Question 1"
+```{r}
+ coviddata %>%
+    filter(date == max(date), state=="California") %>%
+    slice_max(cases, n = 5)
+```
+```{r}
+
+```
+
+
+
+ 
+The table above shows the counties in California with the most current cases of Covid-19
+
+The table below shows the counties in California with the most cumulative cases   
+
+```{r}
+coviddata%>%
+  filter(state=="California") %>% 
+  group_by(county) %>%
+  summarize(sumCases=sum(cases)) %>% 
+  slice_max(sumCases, n=5)
+```
+
+
+
+
+And these are the 5 safest counties in California as of today
+
+ 
+```{r}
+coviddata %>%
+    filter(date == max(date), state=="California") %>%
+    slice_min(cases, n = 5)
+
+```
+
+
+
+
+"Question 2"
+In this question, we are going to look at the story of 4 states and the impact scale can have on data interprtation. The states include: New York, California, Louisiana, and Florida.
+
+Your task is to make a faceted bar plot showing the number of daily, new cases at the state level.
+
+```{r}
+coviddata%>%
+    filter(state=="California") %>% 
+    summarize(sumCases=sum(cases)) %>% 
+    slice_max(sumCases) %>% 
+    ggplot(aes(x ="", y = sumCases))+
+    geom_col(fill = "darkred", color = "darkred", alpha = .25) +
+    labs(title = "Total Cases in the California",
+         x = "California",
+         y = "Cases",
+         subtitle = 'NY Times',
+         color = "",
+         size = "Population") 
+  
+  coviddata%>%
+    filter(state=="New York") %>% 
+    summarize(sumCases=sum(cases)) %>% 
+    slice_max(sumCases) %>% 
+    ggplot(aes(x ="", y = sumCases))+
+    geom_col(fill = "darkblue", color = "darkblue", alpha = .25) +
+    labs(title = "Total Cases in the New York",
+         x = "New York",
+         y = "Cases",
+         subtitle = 'NY Times',
+         color = "",
+         size = "Population") 
+  
+  coviddata%>%
+    filter(state=="Florida") %>% 
+    summarize(sumCases=sum(cases)) %>% 
+    slice_max(sumCases) %>% 
+    ggplot(aes(x ="", y = sumCases))+
+    geom_col(fill = "orange", color = "darkblue", alpha = .25) +
+    labs(title = "Total Cases in the Florida",
+         x = "Florida",
+         y = "Cases",
+         subtitle = 'NY Times',
+         color = "",
+         size = "Population") 
+  
+  coviddata%>%
+    filter(state=="Louisiana") %>% 
+    summarize(sumCases=sum(cases)) %>% 
+    slice_max(sumCases) %>% 
+    ggplot(aes(x ="", y = sumCases))+
+    geom_col(fill = "darkgreen", color = "darkblue", alpha = .25) +
+    labs(title = "Total Cases in the Louisiana",
+         x = "Louisiana",
+         y = "Cases",
+         subtitle = 'NY Times',
+         color = "",
+         size = "Population") 
+
+```
+
+
+
+
+
